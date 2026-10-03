@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Личный кабинет абитуриента</h2>
+        <div>
+            <a href="/applications" class="btn btn-outline-primary">К выбору программ</a>
+            <a href="/logout" class="btn btn-outline-danger">Выйти</a>
+            <a href="/admin" class="btn btn-outline-secondary btn-sm">Админ-панель</a>
+        </div>
+    </div>
+
+    <h4>Ваши поданные заявки:</h4>
+    <div class="row mt-3">
+        <% if (applications && applications.length > 0) { %>
+            <% applications.forEach(app => { %>
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= app.programs.title %></h5>
+                            <p class="card-text text-muted"><%= app.programs.description %></p>
+                            <p class="small text-secondary">Дата подачи: <%= new Date(app.created_at).toLocaleDateString() %></p>
+                            <p class="mb-0">
+    Статус: 
+    <% if (app.status === 'Одобрено') { %>
+        <span class="badge bg-success">Одобрено</span>
+    <% } else if (app.status === 'Отклонено') { %>
+        <span class="badge bg-danger">Отклонено</span>
+    <% } else { %>
+        <span class="badge bg-warning text-dark">На рассмотрении</span>
+    <% } %>
+</p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-12">
+                <div class="alert alert-warning"> Вы еще не подали ни одной заявки.</div>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

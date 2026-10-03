@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Авторизация и Админка</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+    input, button { display: block; width: 100%; margin: 10px 0; padding: 8px; box-sizing: border-box; }
+    .card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Вход / Регистрация</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Пароль">
+    <button onclick="register()">Зарегистрироваться</button>
+    <button onclick="login()">Войти</button>
+  </div>
+
+  <div class="card" id="admin-panel" style="display:none;">
+    <h2>Панель Администратора</h2>
+    <button onclick="loadUsers()">Загрузить список пользователей</button>
+    <pre id="users-list"></pre>
+  </div>
+
+  <script>
+    let token = '';
+
+    async function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+    }
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (data.token) {
+        token = data.token;
+        alert(`Добро пожаловать, ${data.user.email}! Роль: ${data.user.role}`);
+        if (data.user.role === 'admin') {
+          document.getElementById('admin-panel').style.display = 'block';
+        }
+      } else {
+        alert(data.error);
+      }
+    }
+
+    async function loadUsers() {
+      const res = await fetch('/api/admin/users', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      document.getElementById('users-list').textContent = JSON.stringify(data.users, null, 2);
+    }
+  </script>
+</body>
+</html>

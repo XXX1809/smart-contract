@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подача заявок - AI-ассистент абитуриента</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Подача заявки на поступление (AI-ассистент)</h2>
+        <div>
+            <% if (user) { %>
+                <span class="me-3 text-muted">Вы вошли как: <strong><%= user.email %></strong></span>
+                <a href="/dashboard" class="btn btn-outline-primary btn-sm">Личный кабинет</a>
+                <a href="/logout" class="btn btn-outline-danger btn-sm">Выйти</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary btn-sm">Войти</a>
+                <a href="/register" class="btn btn-success btn-sm">Регистрация</a>
+                <a href="/admin" class="btn btn-outline-secondary btn-sm">Админ-панель</a>
+            <% } %>
+        </div>
+    </div>
+
+    <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <% if (error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <div class="row mt-4">
+        <% if (programs && programs.length > 0) { %>
+            <% programs.forEach(program => { %>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= program.title %></h5>
+                            <p class="card-text text-muted"><%= program.description %></p>
+                            <p><strong>Свободных мест:</strong> 
+                                <span class="<%= program.available_spots > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' %>">
+                                    <%= program.available_spots %>
+                                </span>
+                            </p>
+
+                            <form action="/applications" method="POST">
+    <input type="hidden" name="program_id" value="<%= program.id %>">
+    <button type="submit" class="btn btn-primary w-100" 
+        <%= program.available_spots <= 0 ? 'disabled' : '' %>>
+        <%= program.available_spots > 0 ? 'Подать заявку' : 'Мест нет' %>
+    </button>
+</form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-12">
+                <div class="alert alert-warning">Образовательные программы пока не добавлены в базу данных.</div>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
