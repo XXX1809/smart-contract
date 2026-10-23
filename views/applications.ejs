@@ -2,62 +2,143 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Подача заявок - AI-ассистент абитуриента</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus — Каталог программ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Подача заявки на поступление (AI-ассистент)</h2>
+<body class="bg-slate-50 font-sans text-slate-900 antialiased flex h-screen overflow-hidden">
+
+    <!-- Боковая панель (Sidebar) -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex">
         <div>
-            <% if (user) { %>
-                <span class="me-3 text-muted">Вы вошли как: <strong><%= user.email %></strong></span>
-                <a href="/dashboard" class="btn btn-outline-primary btn-sm">Личный кабинет</a>
-                <a href="/logout" class="btn btn-outline-danger btn-sm">Выйти</a>
-            <% } else { %>
-                <a href="/login" class="btn btn-primary btn-sm">Войти</a>
-                <a href="/register" class="btn btn-success btn-sm">Регистрация</a>
-                <a href="/admin" class="btn btn-outline-secondary btn-sm">Админ-панель</a>
-            <% } %>
+            <!-- Логотип -->
+            <div class="h-16 flex items-center px-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/30">
+                        N
+                    </div>
+                    <span class="font-bold text-lg tracking-tight text-slate-900">Nexus</span>
+                </div>
+            </div>
+
+            <!-- Навигация -->
+            <nav class="p-4 space-y-1">
+                <a href="/applications" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-50 text-blue-600 font-medium text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    Каталог программ
+                </a>
+                <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    Мои заявки
+                </a>
+                <% if (user && user.email) { %>
+                    <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                        Админ-панель
+                    </a>
+                <% } %>
+            </nav>
         </div>
-    </div>
 
-    <% if (success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-    <% if (error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
+        <!-- Нижний блок -->
+        <div class="p-4 border-t border-slate-100">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <p class="text-xs font-semibold text-slate-800">Нужна помощь?</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Обратитесь в поддержку абитуриентов.</p>
+            </div>
+            <div class="flex items-center gap-2 mt-3 px-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs text-slate-500 font-medium">Система работает стабильно</span>
+            </div>
+        </div>
+    </aside>
 
-    <div class="row mt-4">
-        <% if (programs && programs.length > 0) { %>
-            <% programs.forEach(program => { %>
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= program.title %></h5>
-                            <p class="card-text text-muted"><%= program.description %></p>
-                            <p><strong>Свободных мест:</strong> 
-                                <span class="<%= program.available_spots > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' %>">
-                                    <%= program.available_spots %>
-                                </span>
-                            </p>
-
-                            <form action="/applications" method="POST">
-    <input type="hidden" name="program_id" value="<%= program.id %>">
-    <button type="submit" class="btn btn-primary w-100" 
-        <%= program.available_spots <= 0 ? 'disabled' : '' %>>
-        <%= program.available_spots > 0 ? 'Подать заявку' : 'Мест нет' %>
-    </button>
-</form>
+    <!-- Основной контент -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- Шапка -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10">
+            <div class="w-96">
+                <input type="text" placeholder="Поиск программ..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all">
+            </div>
+            <div class="flex items-center gap-4">
+                <% if (user) { %>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-blue-100 text-blue-700 font-semibold rounded-full flex items-center justify-center text-sm">
+                            <%= user.email.substring(0, 2).toUpperCase() %>
+                        </div>
+                        <div class="text-left hidden sm:block">
+                            <p class="text-sm font-semibold text-slate-800"><%= user.email %></p>
+                            <p class="text-xs text-slate-500">Абитуриент</p>
                         </div>
                     </div>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <div class="col-12">
-                <div class="alert alert-warning">Образовательные программы пока не добавлены в базу данных.</div>
+                    <a href="/logout" class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-red-600 border border-slate-200 rounded-lg hover:border-red-200 transition-colors">
+                        Выйти
+                    </a>
+                <% } else { %>
+                    <a href="/login" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">Войти</a>
+                <% } %>
             </div>
-        <% } %>
+        </header>
+
+        <!-- Рабочая область -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Каталог образовательных программ</h1>
+                    <p class="text-sm text-slate-500">Выберите подходящее направление и подайте заявку на поступление.</p>
+                </div>
+
+                <!-- Уведомления об ошибке или успехе -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm"><%= error %></div>
+                <% } %>
+                <% if (typeof success !== 'undefined' && success) { %>
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-600 rounded-xl text-sm"><%= success %></div>
+                <% } %>
+
+                <!-- Сетка карточек программ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% if (typeof programs !== 'undefined' && programs.length > 0) { %>
+                        <% programs.forEach(program => { %>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                                <div>
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h3 class="font-bold text-slate-900 text-lg"><%= program.title %></h3>
+                                        <span class="px-2.5 py-1 text-xs font-medium rounded-full <%= program.available_spots > 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600' %>">
+                                            <%= program.available_spots > 0 ? 'Активно' : 'Мест нет' %>
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-slate-500 mb-4"><%= program.description %></p>
+                                </div>
+                                
+                                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-slate-500">Свободных мест: <strong class="text-slate-900"><%= program.available_spots %></strong></span>
+                                    
+                                    <form action="/applications" method="POST">
+                                        <input type="hidden" name="program_id" value="<%= program.id %>">
+                                        <% if (program.available_spots > 0) { %>
+                                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm transition-colors shadow-sm shadow-blue-500/20">
+                                                Подать заявку
+                                            </button>
+                                        <% } else { %>
+                                            <button type="button" disabled class="px-4 py-2 bg-slate-100 text-slate-400 font-medium rounded-lg text-sm cursor-not-allowed">
+                                                Мест нет
+                                            </button>
+                                        <% } %>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-slate-500">Программы пока не добавлены.</p>
+                    <% } %>
+                </div>
+
+            </div>
+        </main>
     </div>
+
 </body>
 </html>

@@ -2,27 +2,71 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus — Регистрация</title>
+    <!-- Подключаем Tailwind CSS через CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="container mt-5" style="max-width: 400px;">
-    <h2 class="mb-4 text-center">Регистрация</h2>
+<body class="bg-slate-50 font-sans text-slate-900 antialiased flex items-center justify-center min-h-screen">
 
-    <% if (locals.error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
+    <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-slate-100">
+        <!-- Логотип и заголовок -->
+        <div class="flex flex-col items-center mb-8">
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30 mb-3">
+                N
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Create your account</h1>
+        </div>
 
-    <form action="/register" method="POST">
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" required>
+        <!-- Вывод ошибок, если они есть (например, пароли не совпадают) -->
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg flex items-center gap-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span><%= error %></span>
+            </div>
+        <% } %>
+
+        <!-- Форма регистрации -->
+        <form action="/register" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
+                <input type="text" name="fullName" required placeholder="Alex Carter" 
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                <input type="email" name="email" required placeholder="alex.carter@example.com" 
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Password</label>
+                <input type="password" name="password" required placeholder="••••••••••••" 
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Confirm Password</label>
+                <!-- Пример с ошибкой совместим с классом border-red-500, если пароли не сошлись -->
+                <input type="password" name="confirmPassword" required placeholder="••••••••••••" 
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
+            </div>
+
+            <p class="text-xs text-slate-400 mt-1">
+                Use at least 8 characters, including an uppercase letter, a lowercase letter, and a number.
+            </p>
+
+            <button type="submit" class="w-full mt-2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm shadow-md shadow-blue-600/20 transition-all">
+                Register
+            </button>
+        </form>
+
+        <!-- Ссылка на вход -->
+        <div class="text-center mt-6 text-sm text-slate-500">
+            Already have an account? <a href="/login" class="text-blue-600 font-medium hover:underline">Log in</a>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Пароль</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
-    </form>
-    <p class="mt-3 text-center">Уже есть аккаунт? <a href="/login">Войти</a></p>
+    </div>
+
 </body>
 </html>
